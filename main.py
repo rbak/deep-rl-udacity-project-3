@@ -84,13 +84,12 @@ def random(env):
 
 def test(env):
     env.reset(train_mode=False)
-    states = env.info.vector_observations
     agent = Agent(env, hyper_params)
     agent.actor_local.load_state_dict(torch.load('results/actor_checkpoint.pth'))
     agent.critic_local.load_state_dict(torch.load('results/critic_checkpoint.pth'))
     rewards_total = 0
     while True:
-        actions = [agent.act(state) for state in states]
+        actions = agent.act(env.info.vector_observations, False)
         env.step(actions)
         rewards = env.info.rewards
         rewards_total += np.array(rewards)
