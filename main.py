@@ -99,9 +99,9 @@ def test(env):
     print('\rRewards: ', np.mean(rewards_total))
 
 
-def train(env, experiment=None, max_episodes=1000, max_t=300):
+def train(env, experiment=None, max_episodes=1000, max_t=1000):
     agent = Agent(env, hyper_params)
-    rewards_window = [deque(maxlen=100) for n in range(env.num_agents)]
+    rewards_window = deque(maxlen=100)
     for i_episode in range(1, max_episodes + 1):
         env.reset(train_mode=True)
         states = env.info.vector_observations
@@ -119,17 +119,15 @@ def train(env, experiment=None, max_episodes=1000, max_t=300):
             if np.any(dones):
                 break
         # Track rewards
-        for i, r in enumerate(rewards_total):
-            rewards_window[i].append(r)
+        rewards_window.append(np.max(rewards_total))
         if experiment:
-            experiment.log_metric('reward', np.mean(rewards_window), step=i_episode)
-        print('\rEpisode {}\tAverage Reward: {:.2f}'.format(i_episode, np.mean(rewards_window)), end="")
+            experiment.log_metric('mean_reward', np.mean(rewards_window), step=i_episode)
+            experiment.log_metric('reward', np.max(rewards_total), step=i_episode)
+        mean_window_rewards = np.mean(rewards_window)
+        print('\rEpisode {}\tAverage Reward: {:.2f}'.format(i_episode, mean_window_rewards), end="")
         if i_episode % 100 == 0:
-            print('\rEpisode {}\tAverage Reward: {:.2f}'.format(i_episode, np.mean(rewards_window)))
-            torch.save(agent.actor_local.state_dict(), 'results/actor_checkpoint.pth')
-            torch.save(agent.critic_local.state_dict(), 'results/critic_checkpoint.pth')
-        mean_window_rewards = np.mean(rewards_window, axis=1)
-        if (mean_window_rewards >= 30.0).all():
+            print('\rEpisode {}\tAverage Reward: {:.2f}'.format(i_episode, mean_window_rewards))
+        if mean_window_rewards >= 0.5:
             print('\nEnvironment solved in {:d} episodes.  Average agent rewards: '
                   .format(i_episode), mean_window_rewards)
             torch.save(agent.actor_local.state_dict(), 'results/actor_checkpoint.pth')
