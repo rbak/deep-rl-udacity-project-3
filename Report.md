@@ -1,4 +1,4 @@
-# Project 2 Report
+# Project 3 Report
 
 ## Algorithm
 The learning algorithm used is DDPG.
