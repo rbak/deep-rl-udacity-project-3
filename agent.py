@@ -12,7 +12,7 @@ import torch.optim as optim
 BUFFER_SIZE = int(1e5)  # replay buffer size
 BATCH_SIZE = 128        # minibatch size
 GAMMA = 0.99            # discount factor
-TAU = 1e-3              # for soft update of target parameters
+TAU = 1e-2              # for soft update of target parameters
 LR_ACTOR = 3e-5         # learning rate of the actor
 LR_CRITIC = 3e-4        # learning rate of the critic
 WEIGHT_DECAY = 0        # L2 weight decay
@@ -52,6 +52,9 @@ class Agent():
         # Replay memory
         self.memory = ReplayBuffer(self.action_size, BUFFER_SIZE, BATCH_SIZE, random_seed)
 
+        self.epsilon = 1.0
+        self.epsilon_decay = 0.999
+
     def step(self, states, actions, rewards, next_states, dones):
         """Save experience in replay memory, and use random sample from buffer to learn."""
         # Save experience / reward
@@ -65,16 +68,19 @@ class Agent():
 
     def act(self, states, add_noise=True):
         """Returns actions for given state as per current policy."""
-        states = torch.from_numpy(states).float().to(device)
+        states = torch.FloatTensor(states)
         self.actor_local.eval()
         with torch.no_grad():
-            actions = self.actor_local(states).cpu().data.numpy()
+            actions = self.actor_local(states)
+
         self.actor_local.train()
         if add_noise:
-            noise = self.noise.sample()
-            print(actions, noise)
-            actions += noise
-        return np.clip(actions, -1, 1)
+            noise = torch.FloatTensor(self.noise.sample())
+            actions += (self.epsilon * noise)
+            self.epsilon = max(0.01, self.epsilon * self.epsilon_decay)
+        actions = torch.clamp(actions, -0.8, 0.8).detach()
+        actions = actions.cpu().numpy()
+        return actions
 
     def reset(self):
         self.noise.reset()
