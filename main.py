@@ -8,18 +8,15 @@ import numpy as np
 import torch
 
 hyper_params = {
-    'memory_size': 20000,      # replay buffer size
-    'batch_size': 64,          # sample batch size
-    't_random': 3,             # random steps at start of trajectory
-    't_max': 1000,             # trajectory length
-    'num_epochs': 10,          # number of updates
-    'c_vf': 0.5,               # coefficent for vf loss (c1)
-    'c_entropy': 0.001,        # starting value for coefficent for entropy (c2)
-    'epsilon': 0.2,            # starting value for clipping parameter
-    'gae_param': 0.95,         # gae param (λ)
-    'discount': .99,           # discount (γ)
-    'curation_percentile': 0,  # percent of trajectory data to drop
-    'gradient_clip': 5,        # gradient clip
+    'memory_size': 10000,      # replay buffer size
+    'batch_size': 128,         # sample batch size
+    'gamma': .99,              # discount (γ)
+    'tau': .01,                # soft update ()
+    'lr_actor': 3e-5,          # learning rate of the actor
+    'lr_critic': 3e-4,         # learning rate of the critic
+    'weight_decay': 0,         # L2 weight decay
+    'epsilon': 1,              # starting value for the amount of noise to apply
+    'epsilon_decay': 0.999     # Decay rate for the randomness/noise
 }
 
 
