@@ -25,11 +25,11 @@ The project materials warned this project might have some instability.  The appe
 
 The rewards received during each run.
 
-![Rewards](https://github.com/rbak/deep-reinforcement-learning-project-3/blob/master/results/rewards.png)
+![Rewards](https://github.com/rbak/deep-rl-udacity-project-3/blob/master/results/rewards.png)
 
 The mean rewards received during each run.  This clearly shows the random nature of the training time.
 
-![Mean Rewards](https://github.com/rbak/deep-reinforcement-learning-project-3/blob/master/results/mean-rewards.png)
+![Mean Rewards](https://github.com/rbak/deep-rl-udacity-project-3/blob/master/results/mean-rewards.png)
 
 ## Future Improvements
 My biggest question coming away from this project was whether this algorithm could be made to train more reliably.  Given more time I wwould like to experiment more with the hyperparameters and the model to see if this is possible.  There may also be improvements to DDPG I am unaware of, so researching that could also be interesting.  Lastly, it might be worthwhile to implement other algorithms and see if they train any more reliably.

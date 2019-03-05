@@ -1,7 +1,7 @@
 # Deep Reinforcement Learning Project 3
 This is an implementation of DDPG for the third project in Udacity's Deep Reinforcement Learning class.  The model is built and trained to solve Unity's [Tennis Environment](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Examples.md#tennis) scenario.
 
-![Trained Agent](https://github.com/rbak/deep-reinforcement-learning-project-3/blob/master/results/tennis2-hd.gif)
+![Trained Agent](https://github.com/rbak/deep-rl-udacity-project-3/blob/master/results/tennis2-hd.gif)
 
 
 ## Environment Details
